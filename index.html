@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Việc cần làm — 1167 Trương Định</title>
+<style>
+  :root{
+    --glass-bg: rgba(255,255,255,0.72);
+    --glass-bg-strong: rgba(255,255,255,0.88);
+    --glass-border: rgba(255,255,255,0.85);
+    --glass-shadow: 0 8px 28px rgba(230,110,10,0.14);
+    --ink: #23281f;
+    --ink-soft: #6b7263;
+    --accent-orange: #FF7A00;
+    --accent-green: #00A651;
+    --accent-red: #ED1C24;
+    --accent-a: #FF7A00;
+    --accent-b: #00A651;
+    --accent-grad: linear-gradient(120deg, var(--accent-orange), var(--accent-green));
+    --stripe-grad: linear-gradient(90deg, var(--accent-orange) 0 33.3%, var(--accent-green) 33.3% 66.6%, var(--accent-red) 66.6% 100%);
+    --now-color: #ED1C24;
+    --danger: #ED1C24;
+    --ok: #00A651;
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --hour-px: 92px;
+    font-size: 16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --glass-bg: rgba(38,36,30,0.6);
+      --glass-bg-strong: rgba(42,40,32,0.8);
+      --glass-border: rgba(255,255,255,0.14);
+      --glass-shadow: 0 8px 28px rgba(0,0,0,0.45);
+      --ink: #fbf6ee;
+      --ink-soft: #cfcabb;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    color:var(--ink);
+    -webkit-tap-highlight-color:transparent;
+  }
+  body{
+    background:
+      radial-gradient(1100px 750px at 12% -8%, rgba(255,140,0,0.22), transparent 60%),
+      radial-gradient(1000px 700px at 100% 5%, rgba(0,166,81,0.20), transparent 55%),
+      radial-gradient(900px 800px at 50% 115%, rgba(237,28,36,0.10), transparent 60%),
+      #fffdf7;
+    background-attachment: fixed;
+    overflow:hidden;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    body{ background:
+      radial-gradient(1100px 750px at 12% -8%, rgba(255,140,0,0.14), transparent 60%),
+      radial-gradient(1000px 700px at 100% 5%, rgba(0,166,81,0.14), transparent 55%),
+      #1b1a15;
+    }
+  }
+  #app{ height:100%; display:flex; flex-direction:column; }
+
+  /* ---------- Top bar ---------- */
+  header{
+    position:sticky; top:0; z-index:20;
+    padding:14px 16px 12px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  header::after{
+    content:""; position:absolute; left:16px; right:16px; bottom:2px; height:4px;
+    border-radius:3px; background: var(--stripe-grad); opacity:0.9;
+  }
+  header{ position:relative; }
+  .titleblock{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .titleblock h1{
+    margin:0; font-size:1.34rem; font-weight:750; letter-spacing:-0.02em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .titleblock .sub{ font-size:0.82rem; color:var(--ink-soft); font-weight:500; }
+  .topbtns{ display:flex; gap:10px; flex-shrink:0; }
+  .glassbtn{
+    width:44px; height:44px; border-radius:50%;
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: var(--glass-shadow);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink); cursor:pointer; transition: transform .15s ease, background .15s ease;
+  }
+  .glassbtn:active{ transform:scale(0.9); }
+  .glassbtn.active{ background: var(--accent-grad); color:white; border-color:transparent; }
+  .glassbtn svg{ width:20px; height:20px; }
+
+  /* ---------- Timeline ---------- */
+  #timelineScroll{
+    flex:1; overflow-y:auto; overflow-x:hidden;
+    padding: 6px 0 40px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #timelineInner{
+    position:relative;
+    margin: 0 14px;
+    padding-left: 58px;
+  }
+  .hourrow{
+    position:relative;
+    height: var(--hour-px);
+    border-top:1px solid rgba(120,130,150,0.18);
+  }
+  .hourrow:first-child{ border-top:none; }
+  .hourlabel{
+    position:absolute; left:-58px; top:-9px; width:48px; text-align:right;
+    font-size:0.72rem; color:var(--ink-soft); font-weight:600; font-variant-numeric: tabular-nums;
+  }
+
+  .nowline{
+    position:absolute; left:-58px; right:0; z-index:15;
+    display:flex; align-items:center; gap:0;
+    pointer-events:none;
+  }
+  .nowline .dot{
+    width:11px; height:11px; border-radius:50%; background:var(--now-color);
+    box-shadow: 0 0 0 4px rgba(255,59,48,0.18), 0 0 10px rgba(255,59,48,0.6);
+    flex-shrink:0; margin-left:44px;
+  }
+  .nowline .line{ flex:1; height:2px; background:var(--now-color); opacity:0.85; }
+  .nowline .time{
+    position:absolute; left:0; top:-8px; width:44px; text-align:right;
+    font-size:0.68rem; font-weight:700; color:var(--now-color);
+  }
+
+  .taskcard{
+    position:absolute; left:0; right:6px; z-index:10;
+    border-radius: var(--radius-md);
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    box-shadow: var(--glass-shadow);
+    padding:9px 12px;
+    overflow:hidden;
+    display:flex; flex-direction:column; gap:2px;
+    cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+    min-height:40px;
+  }
+  .taskcard:active{ transform:scale(0.985); }
+  .taskcard::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+    background: linear-gradient(180deg, var(--accent-orange), var(--accent-green), var(--accent-red));
+  }
+  .taskcard.past{ opacity:0.5; }
+  .taskcard.live{
+    box-shadow: 0 0 0 2px rgba(255,122,0,0.55), var(--glass-shadow);
+  }
+  .taskcard .row1{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .taskcard .ttitle{
+    font-weight:700; font-size:0.92rem; line-height:1.25;
+    overflow:hidden; text-overflow:ellipsis; display:-webkit-box;
+    -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  }
+  .taskcard .ttime{ font-size:0.72rem; color:var(--ink-soft); font-weight:600; white-space:nowrap; }
+  .taskcard .tcontent{
+    font-size:0.78rem; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  }
+  .taskcard .delbadge{
+    position:absolute; top:6px; left:6px; width:22px; height:22px; border-radius:50%;
+    background:var(--danger); color:white; display:flex; align-items:center; justify-content:center;
+    font-size:14px; font-weight:800; z-index:12; box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+  #app.managing .taskcard{ padding-left:32px; animation: jiggle 0.28s infinite ease-in-out alternate; }
+  @keyframes jiggle{ from{transform:rotate(-0.4deg);} to{transform:rotate(0.4deg);} }
+
+  /* alarm toggle on card */
+  .alarmswitch{
+    position:relative; width:38px; height:22px; border-radius:999px; flex-shrink:0;
+    background: rgba(120,130,150,0.28); transition: background .18s ease;
+  }
+  .alarmswitch::after{
+    content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+    background:white; box-shadow:0 1px 3px rgba(0,0,0,0.3); transition: left .18s ease;
+  }
+  .alarmswitch.on{ background: var(--accent-green); }
+  .alarmswitch.on::after{ left:18px; }
+
+  .emptyhint{
+    text-align:center; color:var(--ink-soft); font-size:0.85rem; padding:30px 20px;
+  }
+
+  /* ---------- Modal ---------- */
+  #overlay{
+    position:fixed; inset:0; background:rgba(15,18,28,0.38);
+    backdrop-filter: blur(2px);
+    display:none; align-items:flex-end; justify-content:center; z-index:100;
+  }
+  #overlay.show{ display:flex; }
+  #sheet{
+    width:100%; max-width:560px;
+    background:var(--glass-bg-strong);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -10px 40px rgba(20,25,40,0.25);
+    padding: 10px 20px calc(24px + env(safe-area-inset-bottom,0px));
+    max-height:88vh; overflow-y:auto;
+    animation: sheetup .28s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes sheetup{ from{ transform:translateY(30px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .grabber{ width:38px; height:5px; border-radius:3px; background:rgba(120,130,150,0.4); margin:6px auto 14px; }
+  #sheet h2{ margin:0 0 14px; font-size:1.15rem; font-weight:750; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:0.76rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px; letter-spacing:0.01em; }
+  .field input[type=text], .field textarea{
+    width:100%; border:1px solid var(--glass-border); border-radius:14px;
+    background:rgba(255,255,255,0.55); padding:11px 13px; font-size:0.95rem; color:var(--ink);
+    font-family:inherit; resize:none;
+  }
+  @media (prefers-color-scheme: dark){
+    .field input[type=text], .field textarea, .field input[type=time]{ background:rgba(255,255,255,0.08); }
+  }
+  .field textarea{ min-height:64px; }
+  .timerow{ display:flex; align-items:center; gap:10px; }
+  .timerow .to{ color:var(--ink-soft); font-size:0.85rem; }
+  .field input[type=time]{
+    flex:1; border:1px solid var(--glass-border); border-radius:14px;
+    background:rgba(255,255,255,0.55); padding:9px 10px; font-size:0.95rem; color:var(--ink);
+    font-family:inherit;
+  }
+  .alarmrow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .alarmrow .lbl{ font-size:0.9rem; font-weight:600; }
+  .alarmtimewrap{ margin-top:10px; display:none; }
+  .alarmtimewrap.show{ display:block; }
+  .actions{ display:flex; gap:10px; margin-top:6px; }
+  .btn{
+    flex:1; border:none; border-radius:16px; padding:13px; font-size:0.95rem; font-weight:700;
+    cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .btn.primary{ background:var(--accent-grad); color:white; }
+  .btn.secondary{ background:rgba(120,130,150,0.18); color:var(--ink); }
+  .btn.danger{ background:rgba(255,69,58,0.14); color:var(--danger); flex:none; padding:13px 18px; }
+  .btn:active{ transform:scale(0.97); }
+
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:var(--glass-bg-strong); border:1px solid var(--glass-border);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding:11px 18px; border-radius:16px; font-size:0.85rem; font-weight:600;
+    box-shadow: var(--glass-shadow); opacity:0; pointer-events:none; transition:.25s ease; z-index:200;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .banner{
+    margin:0 16px 4px; padding:9px 14px; border-radius:14px; font-size:0.76rem; font-weight:600;
+    background:rgba(255,159,10,0.16); color:#a35a00; border:1px solid rgba(255,159,10,0.3);
+  }
+  @media (prefers-color-scheme: dark){ .banner{ color:#ffcf8a; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="titleblock">
+      <h1>Việc cần làm</h1>
+      <div class="sub" id="dateLabel">—</div>
+    </div>
+    <div class="topbtns">
+      <div class="glassbtn" id="editBtn" title="Chỉnh sửa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <div class="glassbtn" id="addBtn" title="Thêm việc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <div id="configBanner" class="banner" style="display:none;">
+    Chưa kết nối Google Sheet — dữ liệu đang lưu tạm trên trình duyệt này. Mở file HTML, sửa dòng SHEET_API_URL ở cuối file.
+  </div>
+
+  <div id="timelineScroll">
+    <div id="timelineInner"></div>
+  </div>
+</div>
+
+<div id="overlay">
+  <div id="sheet">
+    <div class="grabber"></div>
+    <h2 id="sheetTitle">Thêm việc cần làm</h2>
+    <div class="field">
+      <label>Tiêu đề</label>
+      <input type="text" id="fTitle" placeholder="Ví dụ: Họp giao ban" maxlength="80">
+    </div>
+    <div class="field">
+      <label>Nội dung</label>
+      <textarea id="fContent" placeholder="Chi tiết công việc..."></textarea>
+    </div>
+    <div class="field">
+      <label>Thời gian thực hiện</label>
+      <div class="timerow">
+        <input type="time" id="fStart" value="08:00">
+        <span class="to">đến</span>
+        <input type="time" id="fEnd" value="09:00">
+      </div>
+    </div>
+    <div class="field">
+      <div class="alarmrow">
+        <span class="lbl">Bật báo thức</span>
+        <div class="alarmswitch" id="fAlarmToggle"></div>
+      </div>
+      <div class="alarmtimewrap" id="alarmTimeWrap">
+        <label style="margin-top:10px;">Giờ báo thức</label>
+        <input type="time" id="fAlarmTime" value="08:00">
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn danger" id="deleteBtn" style="display:none;">Xoá</button>
+      <button class="btn secondary" id="cancelBtn">Huỷ</button>
+      <button class="btn primary" id="saveBtn">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CẤU HÌNH — dán URL Web App của Google Apps Script vào đây
+   Xem hướng dẫn triển khai ở file AppsScript-Code.gs đi kèm.
+   ========================================================= */
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyoLy71scVJYzrGIPH2xi5Xw_YRsLVsoEeIiq1d3fxZBlSY4deP2b_cwrAnOGXEtTob8Q/exec";
+
+const HOUR_PX = 92;
+const LS_KEY = "timeline_tasks_v1";
+let tasks = [];
+let editingId = null;
+let managing = false;
+let notifTimers = {};
+
+const $ = (id) => document.getElementById(id);
+const timelineInner = $("timelineInner");
+const overlay = $("overlay");
+const toastEl = $("toast");
+
+function isConfigured(){
+  return SHEET_API_URL && SHEET_API_URL.indexOf("PASTE_YOUR") === -1;
+}
+
+function pad(n){ return n.toString().padStart(2,"0"); }
+function timeToHours(t){
+  const [h,m] = t.split(":").map(Number);
+  return h + m/60;
+}
+function nowStr(){
+  const d = new Date();
+  return pad(d.getHours())+":"+pad(d.getMinutes());
+}
+function fmtDate(){
+  const d = new Date();
+  const days = ["Chủ nhật","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
+  return days[d.getDay()] + ", " + pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear();
+}
+function uid(){ return "t"+Date.now()+Math.random().toString(16).slice(2,7); }
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 2200);
+}
+
+/* ---------------- Data layer ---------------- */
+async function loadTasks(){
+  if(isConfigured()){
+    try{
+      const res = await fetch(SHEET_API_URL + "?action=list");
+      const data = await res.json();
+      tasks = data.tasks || [];
+      $("configBanner").style.display = "none";
+    }catch(err){
+      showToast("Không tải được dữ liệu từ Google Sheet");
+      tasks = readLocal();
+      $("configBanner").style.display = "block";
+    }
+  }else{
+    tasks = readLocal();
+    $("configBanner").style.display = "block";
+  }
+  render();
+  scheduleAllAlarms();
+}
+function readLocal(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }catch(e){ return []; }
+}
+function writeLocal(){ localStorage.setItem(LS_KEY, JSON.stringify(tasks)); }
+
+async function upsertTask(task){
+  if(isConfigured()){
+    try{
+      await fetch(SHEET_API_URL, {
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({action:"upsert", task})
+      });
+    }catch(err){ showToast("Lỗi lưu lên Google Sheet, đã lưu tạm"); }
+  }
+  const idx = tasks.findIndex(t=>t.id===task.id);
+  if(idx>=0) tasks[idx]=task; else tasks.push(task);
+  writeLocal();
+  render();
+  scheduleAllAlarms();
+}
+async function deleteTask(id){
+  if(isConfigured()){
+    try{
+      await fetch(SHEET_API_URL, {
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({action:"delete", id})
+      });
+    }catch(err){ showToast("Lỗi xoá trên Google Sheet"); }
+  }
+  tasks = tasks.filter(t=>t.id!==id);
+  writeLocal();
+  render();
+  scheduleAllAlarms();
+}
+
+/* ---------------- Render timeline ---------------- */
+function render(){
+  timelineInner.innerHTML = "";
+  timelineInner.style.height = (24*HOUR_PX)+"px";
+
+  for(let h=0; h<24; h++){
+    const row = document.createElement("div");
+    row.className = "hourrow";
+    row.style.top = (h*HOUR_PX)+"px";
+    const lbl = document.createElement("div");
+    lbl.className = "hourlabel";
+    lbl.textContent = pad(h)+":00";
+    row.appendChild(lbl);
+    row.style.position = "absolute";
+    row.style.left = "0"; row.style.right = "0";
+    row.style.height = HOUR_PX+"px";
+    timelineInner.appendChild(row);
+  }
+
+  const nowH = timeToHours(nowStr());
+  const nowLine = document.createElement("div");
+  nowLine.className = "nowline";
+  nowLine.style.top = (nowH*HOUR_PX)+"px";
+  nowLine.innerHTML = `<div class="time">${nowStr()}</div><div class="dot"></div><div class="line"></div>`;
+  timelineInner.appendChild(nowLine);
+
+  if(tasks.length===0){
+    const empty = document.createElement("div");
+    empty.className = "emptyhint";
+    empty.style.position="absolute"; empty.style.top=(HOUR_PX*8)+"px"; empty.style.left="0"; empty.style.right="0";
+    empty.textContent = "Chưa có việc nào — bấm + để thêm";
+    timelineInner.appendChild(empty);
+  }
+
+  tasks.slice().sort((a,b)=>timeToHours(a.start)-timeToHours(b.start)).forEach(task=>{
+    const top = timeToHours(task.start)*HOUR_PX;
+    let height = (timeToHours(task.end)-timeToHours(task.start))*HOUR_PX;
+    if(height < 46) height = 46;
+    const card = document.createElement("div");
+    card.className = "taskcard";
+    if(timeToHours(task.end) < nowH) card.classList.add("past");
+    if(timeToHours(task.start) <= nowH && nowH <= timeToHours(task.end)) card.classList.add("live");
+    card.style.top = top+"px";
+    card.style.height = height+"px";
+    card.style.left = "8px";
+    card.dataset.id = task.id;
+
+    card.innerHTML = `
+      <div class="row1">
+        <div class="ttitle">${escapeHtml(task.title)}</div>
+        <div class="ttime">${task.start}–${task.end}</div>
+      </div>
+      ${task.content ? `<div class="tcontent">${escapeHtml(task.content)}</div>` : ""}
+    `;
+
+    if(height >= 58){
+      const sw = document.createElement("div");
+      sw.className = "alarmswitch" + (task.alarmOn ? " on" : "");
+      sw.style.position="absolute"; sw.style.right="10px"; sw.style.bottom="8px";
+      sw.addEventListener("click", (e)=>{
+        e.stopPropagation();
+        task.alarmOn = !task.alarmOn;
+        if(task.alarmOn) requestNotifPermission();
+        upsertTask(task);
+      });
+      card.appendChild(sw);
+    }
+
+    if(managing){
+      const del = document.createElement("div");
+      del.className = "delbadge";
+      del.textContent = "−";
+      del.addEventListener("click",(e)=>{
+        e.stopPropagation();
+        if(confirm("Xoá việc \\""+task.title+"\\"?")) deleteTask(task.id);
+      });
+      card.appendChild(del);
+    }
+
+    card.addEventListener("click", ()=> openEdit(task));
+    timelineInner.appendChild(card);
+  });
+
+  $("dateLabel").textContent = fmtDate();
+}
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+setInterval(()=>{ render(); }, 60000);
+
+/* ---------------- Modal logic ---------------- */
+function openAdd(){
+  editingId = null;
+  $("sheetTitle").textContent = "Thêm việc cần làm";
+  $("fTitle").value = "";
+  $("fContent").value = "";
+  const roundNow = new Date(); roundNow.setMinutes(0,0,0); roundNow.setHours(roundNow.getHours()+1);
+  const startDefault = pad(roundNow.getHours())+":00";
+  const endD = new Date(roundNow); endD.setHours(endD.getHours()+1);
+  $("fStart").value = startDefault;
+  $("fEnd").value = pad(endD.getHours())+":00";
+  $("fAlarmToggle").classList.remove("on");
+  $("alarmTimeWrap").classList.remove("show");
+  $("fAlarmTime").value = startDefault;
+  $("deleteBtn").style.display = "none";
+  overlay.classList.add("show");
+}
+function openEdit(task){
+  if(managing) return;
+  editingId = task.id;
+  $("sheetTitle").textContent = "Sửa việc cần làm";
+  $("fTitle").value = task.title;
+  $("fContent").value = task.content || "";
+  $("fStart").value = task.start;
+  $("fEnd").value = task.end;
+  $("fAlarmToggle").classList.toggle("on", !!task.alarmOn);
+  $("alarmTimeWrap").classList.toggle("show", !!task.alarmOn);
+  $("fAlarmTime").value = task.alarmTime || task.start;
+  $("deleteBtn").style.display = "block";
+  overlay.classList.add("show");
+}
+function closeSheet(){ overlay.classList.remove("show"); }
+
+$("addBtn").addEventListener("click", openAdd);
+$("cancelBtn").addEventListener("click", closeSheet);
+overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeSheet(); });
+
+$("fAlarmToggle").addEventListener("click", ()=>{
+  const on = $("fAlarmToggle").classList.toggle("on");
+  $("alarmTimeWrap").classList.toggle("show", on);
+  if(on) requestNotifPermission();
+});
+
+$("saveBtn").addEventListener("click", ()=>{
+  const title = $("fTitle").value.trim();
+  if(!title){ showToast("Vui lòng nhập tiêu đề"); return; }
+  let start = $("fStart").value || "08:00";
+  let end = $("fEnd").value || "09:00";
+  if(timeToHours(end) <= timeToHours(start)){ showToast("Giờ kết thúc phải sau giờ bắt đầu"); return; }
+  const alarmOn = $("fAlarmToggle").classList.contains("on");
+  const task = {
+    id: editingId || uid(),
+    title, content: $("fContent").value.trim(),
+    start, end,
+    alarmOn,
+    alarmTime: alarmOn ? ($("fAlarmTime").value || start) : ""
+  };
+  upsertTask(task);
+  closeSheet();
+});
+$("deleteBtn").addEventListener("click", ()=>{
+  if(editingId && confirm("Xoá việc này?")){
+    deleteTask(editingId);
+    closeSheet();
+  }
+});
+
+$("editBtn").addEventListener("click", ()=>{
+  managing = !managing;
+  $("editBtn").classList.toggle("active", managing);
+  document.getElementById("app").classList.toggle("managing", managing);
+  render();
+});
+
+/* ---------------- Alarms / notifications ---------------- */
+function requestNotifPermission(){
+  if("Notification" in window && Notification.permission === "default"){
+    Notification.requestPermission();
+  }
+}
+function beep(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = 880;
+    g.gain.setValueAtTime(0.001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.5);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime+0.55);
+    setTimeout(()=>{
+      const o2=ctx.createOscillator(); const g2=ctx.createGain();
+      o2.type="sine"; o2.frequency.value=1046;
+      g2.gain.setValueAtTime(0.001, ctx.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime+0.02);
+      g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.5);
+      o2.connect(g2); g2.connect(ctx.destination);
+      o2.start(); o2.stop(ctx.currentTime+0.55);
+    }, 260);
+  }catch(e){}
+}
+function scheduleAllAlarms(){
+  Object.values(notifTimers).forEach(clearTimeout);
+  notifTimers = {};
+  const now = new Date();
+  tasks.forEach(task=>{
+    if(!task.alarmOn) return;
+    const t = task.alarmTime || task.start;
+    const [h,m] = t.split(":").map(Number);
+    const target = new Date(); target.setHours(h,m,0,0);
+    const diff = target - now;
+    if(diff > 0 && diff < 24*3600*1000){
+      notifTimers[task.id] = setTimeout(()=>fireAlarm(task), diff);
+    }
+  });
+}
+function fireAlarm(task){
+  beep();
+  if("Notification" in window && Notification.permission === "granted"){
+    new Notification("⏰ "+task.title, { body: task.content || (task.start+" – "+task.end) });
+  }else{
+    showToast("⏰ Đến giờ: "+task.title);
+  }
+  render();
+}
+
+/* ---------------- Init ---------------- */
+loadTasks();
+setTimeout(()=>{
+  const target = timeToHours(nowStr())*HOUR_PX - 160;
+  $("timelineScroll").scrollTop = Math.max(0, target);
+}, 60);
+</script>
+</body>
+</html>
