@@ -528,8 +528,11 @@
         <input type="time" id="fAlarmTime" value="08:00">
       </div>
     </div>
+    <div class="actions" id="editOnlyActions" style="display:none;">
+      <button class="btn secondary" id="duplicateBtn">Sao chép</button>
+      <button class="btn danger" id="deleteBtn">Xoá</button>
+    </div>
     <div class="actions">
-      <button class="btn danger" id="deleteBtn" style="display:none;">Xoá</button>
       <button class="btn secondary" id="cancelBtn">Huỷ</button>
       <button class="btn primary" id="saveBtn">Lưu</button>
     </div>
@@ -1030,7 +1033,7 @@ function openAdd(){
   $("fAlarmToggle").classList.remove("on");
   $("alarmTimeWrap").classList.remove("show");
   $("fAlarmTime").value = startDefault;
-  $("deleteBtn").style.display = "none";
+  $("editOnlyActions").style.display = "none";
   overlay.classList.add("show");
 }
 function openEdit(task){
@@ -1050,7 +1053,7 @@ function openEdit(task){
   $("fAlarmToggle").classList.toggle("on", !!task.alarmOn);
   $("alarmTimeWrap").classList.toggle("show", !!task.alarmOn);
   $("fAlarmTime").value = task.alarmTime || task.start;
-  $("deleteBtn").style.display = "block";
+  $("editOnlyActions").style.display = "flex";
   overlay.classList.add("show");
 }
 function closeSheet(){ overlay.classList.remove("show"); }
@@ -1092,6 +1095,14 @@ $("deleteBtn").addEventListener("click", ()=>{
     deleteTask(editingId);
     closeSheet();
   }
+});
+$("duplicateBtn").addEventListener("click", ()=>{
+  // Giữ nguyên mọi thông tin đang có trên form, nhưng chuyển sang chế độ
+  // "tạo mới": bấm Lưu sẽ tạo ra một việc mới (bản sao), không ghi đè việc gốc.
+  editingId = null;
+  $("sheetTitle").textContent = "Sao chép việc cần làm";
+  $("editOnlyActions").style.display = "none";
+  showToast("Đã tạo bản sao — chỉnh ngày/giờ rồi bấm Lưu");
 });
 
 $("editBtn").addEventListener("click", ()=>{
