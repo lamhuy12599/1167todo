@@ -902,13 +902,16 @@ function render(){
 
   const allDayTasks = tasks.filter(t=>occursOnDate(t, dateStr));
 
+  /* Lọc theo chế độ xem để 2 nhóm việc không lẫn lộn với nhau:
+     - Chế độ "1 nhân viên": chỉ hiện việc khai teardown = 1 nhân viên
+       (ẩn hoàn toàn các việc đã khai teardown = 2 nhân viên).
+     - Chế độ "2 nhân viên": chỉ hiện việc khai teardown = 2 nhân viên
+       và đã được phân công cho A hoặc B (giữ nguyên như trước). */
   let visibleTasks;
   if(staffMode === "2"){
-    // Chỉ hiện việc đã khai teardown = 2 nhân viên (và đã gán A hoặc B).
-    // Việc teardown = 1 nhân viên bị ẩn hoàn toàn ở chế độ xem này (theo yêu cầu).
     visibleTasks = allDayTasks.filter(t => t.teardown === "2" && (t.assignee === "A" || t.assignee === "B"));
   }else{
-    visibleTasks = allDayTasks;
+    visibleTasks = allDayTasks.filter(t => t.teardown !== "2");
   }
 
   if(visibleTasks.length===0){
@@ -917,7 +920,7 @@ function render(){
     empty.style.position="absolute"; empty.style.top=(HOUR_PX*8)+"px"; empty.style.left="0"; empty.style.right="0";
     empty.textContent = staffMode === "2"
       ? "Chưa có việc nào cần 2 nhân viên — bấm + để thêm"
-      : "Chưa có việc nào — bấm + để thêm";
+      : "Chưa có việc nào cho 1 nhân viên — bấm + để thêm";
     timelineInner.appendChild(empty);
   }
 
