@@ -30,7 +30,7 @@
     --radius-lg: 24px;
     --radius-md: 16px;
     --radius-sm: 12px;
-    --hour-px: 112px;
+    --hour-px: 168px;
     --gutter-w: 62px;
     font-size: 16px;
   }
@@ -560,7 +560,7 @@
    ========================================================= */
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyoLy71scVJYzrGIPH2xi5Xw_YRsLVsoEeIiq1d3fxZBlSY4deP2b_cwrAnOGXEtTob8Q/exec";
 
-const HOUR_PX = 112;
+const HOUR_PX = 168;
 const LS_KEY = "timeline_tasks_v1";
 const STAFF_LS_KEY = "timeline_staffmode_v1";
 let tasks = [];
@@ -750,7 +750,7 @@ document.querySelectorAll(".staffseg").forEach(btn=>{
 /* ---------------- Chia cột cho các việc trùng giờ ----------------
    Gom các việc chồng lấn thành 1 cụm, mỗi việc vào cột trống đầu tiên,
    rồi cho mỗi việc giãn sang các cột bên phải nếu không bị việc khác chặn. */
-const MIN_CARD_H = 52;
+const MIN_CARD_H = 40;
 function layoutTasks(list){
   const items = list.map(t=>{
     const top = timeToHours(t.start)*HOUR_PX;
