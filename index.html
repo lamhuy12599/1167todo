@@ -610,6 +610,46 @@ function fmtDate(d){
   return days[d.getDay()] + ", " + pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear();
 }
 function uid(){ return "t"+Date.now()+Math.random().toString(16).slice(2,7); }
+
+/* Chuẩn hoá dữ liệu giờ/ngày lấy về từ Google Sheet.
+   Google Sheet đôi khi tự đổi cột "start/end/alarmTime/date" sang kiểu
+   Ngày/Giờ, khiến API trả về chuỗi kiểu "1899-12-30T15:02:56.000Z" thay vì
+   "15:02" như app cần — các hàm này bóc lại đúng giờ/ngày từ đó, tránh
+   việc thẻ bị tính sai vị trí (NaN) rồi dồn hết lên đầu 00:00. */
+function normalizeTimeField(v, fallback){
+  if(v === undefined || v === null || v === "") return fallback;
+  if(typeof v === "number"){
+    const totalMin = Math.round((v % 1) * 24 * 60);
+    const h = Math.floor(totalMin/60) % 24, m = totalMin % 60;
+    return pad(h)+":"+pad(m);
+  }
+  const s = String(v);
+  let m = s.match(/^(\d{1,2}):(\d{2})/);
+  if(m) return pad(Number(m[1]))+":"+m[2];
+  m = s.match(/T(\d{2}):(\d{2})/);
+  if(m) return m[1]+":"+m[2];
+  return fallback;
+}
+function normalizeDateField(v, fallback){
+  if(v === undefined || v === null || v === "") return fallback;
+  if(typeof v === "number"){
+    const ms = Math.round((v - 25569) * 86400000);
+    return isoDate(new Date(ms));
+  }
+  const s = String(v);
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if(m) return m[1];
+  return fallback;
+}
+function normalizeTask(t){
+  const start = normalizeTimeField(t.start, "08:00");
+  return Object.assign({}, t, {
+    date: normalizeDateField(t.date, isoDate(new Date())),
+    start,
+    end: normalizeTimeField(t.end, start),
+    alarmTime: t.alarmOn ? normalizeTimeField(t.alarmTime, start) : (t.alarmTime || "")
+  });
+}
 function showToast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add("show");
@@ -639,15 +679,15 @@ async function loadTasks(){
     try{
       const res = await fetch(SHEET_API_URL + "?action=list");
       const data = await res.json();
-      tasks = data.tasks || [];
+      tasks = (data.tasks || []).map(normalizeTask);
       $("configBanner").style.display = "none";
     }catch(err){
       showToast("Không tải được dữ liệu từ Google Sheet");
-      tasks = readLocal();
+      tasks = readLocal().map(normalizeTask);
       $("configBanner").style.display = "block";
     }
   }else{
-    tasks = readLocal();
+    tasks = readLocal().map(normalizeTask);
     $("configBanner").style.display = "block";
   }
   render();
