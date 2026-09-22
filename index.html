@@ -6,37 +6,33 @@
 <title>Việc cần làm — 1167 Trương Định</title>
 <style>
   :root{
-    --glass-bg: rgba(255,255,255,0.72);
-    --glass-bg-strong: rgba(255,255,255,0.88);
-    --glass-border: rgba(255,255,255,0.85);
-    --glass-shadow: 0 8px 28px rgba(230,110,10,0.14);
-    --ink: #23281f;
-    --ink-soft: #6b7263;
-    --accent-orange: #FF7A00;
-    --accent-green: #00A651;
-    --accent-red: #ED1C24;
-    --accent-a: #FF7A00;
-    --accent-b: #00A651;
-    --accent-grad: linear-gradient(120deg, var(--accent-orange), var(--accent-green));
-    --stripe-grad: linear-gradient(90deg, var(--accent-orange) 0 33.3%, var(--accent-green) 33.3% 66.6%, var(--accent-red) 66.6% 100%);
-    --now-color: #ED1C24;
-    --danger: #ED1C24;
-    --ok: #00A651;
-    --radius-lg: 26px;
-    --radius-md: 18px;
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --card-border: #e7e9ee;
+    --shadow: 0 4px 18px rgba(30,35,60,0.07);
+    --ink: #1f2430;
+    --ink-soft: #838a9a;
+    --ink-faint: #b3b8c4;
+    --line: #eef0f4;
+    --line-strong: #dde0e8;
+
+    --cat-vesinh: #16A34A;
+    --cat-kiemrutdate: #E11D2E;
+    --cat-congviec: #2563EB;
+    --cat-none: #9AA3AF;
+
+    --now-color: #E11D2E;
+    --danger: #E11D2E;
+
+    --accent-grad: linear-gradient(120deg, #2563EB, #16A34A);
+    --stripe-grad: linear-gradient(90deg, var(--cat-vesinh) 0 33.3%, var(--cat-kiemrutdate) 33.3% 66.6%, var(--cat-congviec) 66.6% 100%);
+
+    --radius-lg: 24px;
+    --radius-md: 16px;
     --radius-sm: 12px;
-    --hour-px: 92px;
+    --hour-px: 112px;
+    --gutter-w: 62px;
     font-size: 16px;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --glass-bg: rgba(38,36,30,0.6);
-      --glass-bg-strong: rgba(42,40,32,0.8);
-      --glass-border: rgba(255,255,255,0.14);
-      --glass-shadow: 0 8px 28px rgba(0,0,0,0.45);
-      --ink: #fbf6ee;
-      --ink-soft: #cfcabb;
-    }
   }
   *{box-sizing:border-box;}
   html,body{
@@ -47,56 +43,90 @@
     -webkit-tap-highlight-color:transparent;
   }
   body{
-    background:
-      radial-gradient(1100px 750px at 12% -8%, rgba(255,140,0,0.22), transparent 60%),
-      radial-gradient(1000px 700px at 100% 5%, rgba(0,166,81,0.20), transparent 55%),
-      radial-gradient(900px 800px at 50% 115%, rgba(237,28,36,0.10), transparent 60%),
-      #fffdf7;
-    background-attachment: fixed;
+    background: var(--bg);
     overflow:hidden;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
-  }
-  @media (prefers-color-scheme: dark){
-    body{ background:
-      radial-gradient(1100px 750px at 12% -8%, rgba(255,140,0,0.14), transparent 60%),
-      radial-gradient(1000px 700px at 100% 5%, rgba(0,166,81,0.14), transparent 55%),
-      #1b1a15;
-    }
   }
   #app{ height:100%; display:flex; flex-direction:column; }
 
   /* ---------- Top bar ---------- */
   header{
     position:sticky; top:0; z-index:20;
-    padding:14px 16px 12px;
+    padding:14px 16px 10px;
     display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:#ffffff;
   }
   header::after{
-    content:""; position:absolute; left:16px; right:16px; bottom:2px; height:4px;
+    content:""; position:absolute; left:16px; right:16px; bottom:0; height:4px;
     border-radius:3px; background: var(--stripe-grad); opacity:0.9;
   }
   header{ position:relative; }
   .titleblock{ display:flex; flex-direction:column; gap:2px; min-width:0; }
   .titleblock h1{
-    margin:0; font-size:1.34rem; font-weight:750; letter-spacing:-0.02em;
+    margin:0; font-size:1.3rem; font-weight:750; letter-spacing:-0.02em;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .titleblock .sub{ font-size:0.82rem; color:var(--ink-soft); font-weight:500; }
   .topbtns{ display:flex; gap:10px; flex-shrink:0; }
   .glassbtn{
-    width:44px; height:44px; border-radius:50%;
-    background:var(--glass-bg);
-    border:1px solid var(--glass-border);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow: var(--glass-shadow);
+    width:42px; height:42px; border-radius:50%;
+    background:#f4f5f8;
+    border:1px solid var(--card-border);
+    box-shadow: none;
     display:flex; align-items:center; justify-content:center;
     color:var(--ink); cursor:pointer; transition: transform .15s ease, background .15s ease;
   }
   .glassbtn:active{ transform:scale(0.9); }
   .glassbtn.active{ background: var(--accent-grad); color:white; border-color:transparent; }
-  .glassbtn svg{ width:20px; height:20px; }
+  .glassbtn svg{ width:19px; height:19px; }
+
+  /* ---------- Date nav ---------- */
+  .datenav{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    padding: 4px 16px 12px;
+  }
+  .navbtn{
+    width:34px; height:34px; border-radius:50%; border:1px solid var(--card-border);
+    background:#f8f9fb; color:var(--ink-soft); font-size:1.1rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  .navbtn:active{ transform:scale(0.9); }
+  .datelabelbtn{
+    border:none; background:#f4f5f8; border-radius:14px; padding:8px 16px;
+    font-size:0.92rem; font-weight:700; color:var(--ink); cursor:pointer;
+    display:flex; align-items:center; gap:8px; min-width:0;
+  }
+  .datelabelbtn svg{ width:16px; height:16px; color:var(--ink-soft); flex-shrink:0; }
+  .datelabelbtn span{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .todaybtn{
+    border:none; background:transparent; color:#2563EB; font-weight:700; font-size:0.82rem;
+    cursor:pointer; padding:6px 4px;
+  }
+  .hiddendate{ position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; left:-9999px; }
+
+  /* ---------- Staff mode pill ---------- */
+  .staffnav{ display:flex; align-items:center; justify-content:center; padding: 0 16px 10px; }
+  .staffpill{
+    display:inline-flex; background:#f4f5f8; border-radius:999px; padding:3px; gap:2px;
+    border:1px solid var(--card-border);
+  }
+  .staffseg{
+    border:none; background:transparent; padding:7px 16px; border-radius:999px;
+    font-size:0.8rem; font-weight:700; color:var(--ink-soft); cursor:pointer;
+    font-family:inherit; transition: background .15s ease, color .15s ease;
+  }
+  .staffseg.active{ background: var(--accent-grad); color:#fff; }
+  .staffseg:active{ transform:scale(0.96); }
+
+  /* ---------- Column header bar (2-nhân-viên view) ---------- */
+  .colheaderbar{
+    display:none; margin: 0 14px 4px; padding-left: var(--gutter-w); gap:10px;
+  }
+  .colheaderbar.show{ display:flex; }
+  .colheadercell{
+    flex:1; text-align:center; font-size:0.74rem; font-weight:800; color:var(--ink-soft);
+    background:#f4f5f8; border-radius:10px; padding:5px 0;
+  }
 
   /* ---------- Timeline ---------- */
   #timelineScroll{
@@ -107,89 +137,143 @@
   #timelineInner{
     position:relative;
     margin: 0 14px;
-    padding-left: 58px;
+    padding-left: var(--gutter-w);
   }
-  .hourrow{
-    position:relative;
-    height: var(--hour-px);
-    border-top:1px solid rgba(120,130,150,0.18);
+  .tick{
+    position:absolute; left:0; right:0; height:0;
+    border-top:1px solid var(--line);
+    pointer-events:none;
   }
-  .hourrow:first-child{ border-top:none; }
-  .hourlabel{
-    position:absolute; left:-58px; top:-9px; width:48px; text-align:right;
-    font-size:0.72rem; color:var(--ink-soft); font-weight:600; font-variant-numeric: tabular-nums;
+  .tick.h00{ border-top-color: var(--line-strong); }
+  .tick.h30{ border-top-color: var(--line); }
+  .tick.h15, .tick.h45{ border-top-style:dashed; border-top-color: var(--line); }
+
+  .ticklabel{
+    position:absolute; left:0; top:-8px;
+    width:calc(var(--gutter-w) - 10px); text-align:right;
+    font-variant-numeric: tabular-nums; pointer-events:none;
   }
+  .ticklabel.h00{ font-size:0.76rem; font-weight:750; color:var(--ink); }
+  .ticklabel.h30{ font-size:0.66rem; font-weight:650; color:var(--ink-soft); }
+  .ticklabel.h15, .ticklabel.h45{ font-size:0.6rem; font-weight:500; color:var(--ink-faint); }
 
   .nowline{
-    position:absolute; left:-58px; right:0; z-index:15;
+    position:absolute; left:0; right:0; z-index:15;
     display:flex; align-items:center; gap:0;
     pointer-events:none;
   }
   .nowline .dot{
     width:11px; height:11px; border-radius:50%; background:var(--now-color);
-    box-shadow: 0 0 0 4px rgba(255,59,48,0.18), 0 0 10px rgba(255,59,48,0.6);
-    flex-shrink:0; margin-left:44px;
+    box-shadow: 0 0 0 4px rgba(225,29,46,0.16), 0 0 10px rgba(225,29,46,0.45);
+    flex-shrink:0; margin-left: calc(var(--gutter-w) - 5px);
   }
   .nowline .line{ flex:1; height:2px; background:var(--now-color); opacity:0.85; }
   .nowline .time{
-    position:absolute; left:0; top:-8px; width:44px; text-align:right;
-    font-size:0.68rem; font-weight:700; color:var(--now-color);
+    position:absolute; left:4px; top:-20px; width:calc(var(--gutter-w) - 14px); text-align:center;
+    font-size:0.64rem; font-weight:800; color:#fff;
+    background:var(--now-color); border-radius:8px; padding:2px 0;
+    box-shadow:0 2px 6px rgba(225,29,46,0.35);
+  }
+
+  .coldivider{
+    position:absolute; top:0; bottom:0; width:1px; z-index:5;
+    background:var(--line-strong); pointer-events:none;
   }
 
   .taskcard{
-    position:absolute; left:0; right:6px; z-index:10;
+    --cat-color: var(--cat-none);
+    position:absolute; left:0; right:auto; z-index:10;
+    min-width:0;
     border-radius: var(--radius-md);
-    background:var(--glass-bg);
-    border:1px solid var(--glass-border);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    box-shadow: var(--glass-shadow);
-    padding:9px 12px;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    padding:9px 12px 9px 16px;
     overflow:hidden;
-    display:flex; flex-direction:column; gap:2px;
+    display:flex; flex-direction:column; gap:3px;
     cursor:pointer;
     transition: transform .12s ease, box-shadow .12s ease;
     min-height:40px;
   }
   .taskcard:active{ transform:scale(0.985); }
   .taskcard::before{
-    content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
-    background: linear-gradient(180deg, var(--accent-orange), var(--accent-green), var(--accent-red));
+    content:""; position:absolute; left:0; top:0; bottom:0; width:5px;
+    background: var(--cat-color);
   }
   .taskcard.past{ opacity:0.5; }
   .taskcard.live{
-    box-shadow: 0 0 0 2px rgba(255,122,0,0.55), var(--glass-shadow);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.35), var(--shadow);
   }
   .taskcard .row1{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .taskcard .rhs{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
   .taskcard .ttitle{
+    flex:1; min-width:0; word-break:break-word;
     font-weight:700; font-size:0.92rem; line-height:1.25;
     overflow:hidden; text-overflow:ellipsis; display:-webkit-box;
     -webkit-line-clamp:2; -webkit-box-orient:vertical;
   }
-  .taskcard .ttime{ font-size:0.72rem; color:var(--ink-soft); font-weight:600; white-space:nowrap; }
+  .taskcard .ttime{ font-size:0.72rem; color:var(--ink-soft); font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums; }
   .taskcard .tcontent{
     font-size:0.78rem; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
   }
+  .catchip{
+    display:inline-flex; align-items:center; gap:4px; align-self:flex-start;
+    font-size:0.66rem; font-weight:700; padding:2px 8px; border-radius:999px;
+    color:#fff; background:var(--cat-color); white-space:nowrap;
+  }
+  .repeatchip{
+    display:inline-flex; align-items:center; font-size:0.64rem; font-weight:650;
+    color:var(--ink-soft); background:#f2f3f6; padding:2px 7px; border-radius:999px; margin-left:6px;
+  }
+  .chiprow{ display:flex; align-items:center; flex-wrap:wrap; gap:4px; }
   .taskcard .delbadge{
     position:absolute; top:6px; left:6px; width:22px; height:22px; border-radius:50%;
     background:var(--danger); color:white; display:flex; align-items:center; justify-content:center;
-    font-size:14px; font-weight:800; z-index:12; box-shadow:0 2px 6px rgba(0,0,0,0.3);
+    font-size:14px; font-weight:800; z-index:12; box-shadow:0 2px 6px rgba(0,0,0,0.25);
   }
   #app.managing .taskcard{ padding-left:32px; animation: jiggle 0.28s infinite ease-in-out alternate; }
+  #app.managing .taskcard.compact{ padding-left:28px; }
+  .taskcard.compact .delbadge{ width:18px; height:18px; font-size:12px; top:5px; left:5px; }
   @keyframes jiggle{ from{transform:rotate(-0.4deg);} to{transform:rotate(0.4deg);} }
 
   /* alarm toggle on card */
   .alarmswitch{
     position:relative; width:38px; height:22px; border-radius:999px; flex-shrink:0;
-    background: rgba(120,130,150,0.28); transition: background .18s ease;
+    background: #e3e5ea; transition: background .18s ease;
   }
   .alarmswitch::after{
     content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
-    background:white; box-shadow:0 1px 3px rgba(0,0,0,0.3); transition: left .18s ease;
+    background:white; box-shadow:0 1px 3px rgba(0,0,0,0.25); transition: left .18s ease;
   }
-  .alarmswitch.on{ background: var(--accent-green); }
+  .alarmswitch.on{ background: var(--cat-vesinh); }
   .alarmswitch.on::after{ left:18px; }
+
+  /* nút báo thức trên thẻ: luôn hiện, vùng bấm được nới rộng */
+  .taskcard .alarmswitch{ flex-shrink:0; cursor:pointer; }
+  .taskcard .alarmswitch::before{ content:""; position:absolute; inset:-8px -6px; }
+
+  /* thẻ ngắn (< ~35 phút): 1 dòng tiêu đề, ẩn phần phụ để không bị cắt dở */
+  .taskcard.short .ttitle{ -webkit-line-clamp:1; }
+  .taskcard.short .chiprow, .taskcard.short .tcontent{ display:none; }
+
+  /* thẻ hẹp (khi nhiều việc trùng giờ đứng cạnh nhau) */
+  .taskcard.compact{ padding:6px 8px 6px 12px; gap:2px; border-radius:12px; }
+  .taskcard.compact::before{ width:4px; }
+  .taskcard.compact .ttitle{ font-size:0.8rem; line-height:1.2; }
+  .taskcard.compact .row2{ display:flex; align-items:center; justify-content:space-between; gap:4px; min-height:18px; }
+  .taskcard.compact .ttime{ font-size:0.66rem; overflow:hidden; text-overflow:ellipsis; }
+  .taskcard.compact .alarmswitch{ width:30px; height:18px; }
+  .taskcard.compact .alarmswitch::after{ width:14px; height:14px; }
+  .taskcard.compact .alarmswitch.on::after{ left:14px; }
+  .taskcard.compact .repeatchip{ display:none; }
+  .taskcard.compact .catchip{ font-size:0.58rem; padding:1px 6px; }
+  .taskcard.compact .tcontent{ font-size:0.7rem; }
+  .taskcard.tiny .chiprow, .taskcard.tiny .tcontent{ display:none; }
+  .taskcard.micro{ padding:5px 5px 5px 9px; }
+  .taskcard.micro .ttime{ display:none; }
+  .taskcard.micro .row2{ justify-content:flex-end; }
+  #app.managing .taskcard.micro{ padding-left:24px; }
 
   .emptyhint{
     text-align:center; color:var(--ink-soft); font-size:0.85rem; padding:30px 20px;
@@ -197,72 +281,132 @@
 
   /* ---------- Modal ---------- */
   #overlay{
-    position:fixed; inset:0; background:rgba(15,18,28,0.38);
-    backdrop-filter: blur(2px);
+    position:fixed; inset:0; background:rgba(20,24,35,0.32);
     display:none; align-items:flex-end; justify-content:center; z-index:100;
   }
   #overlay.show{ display:flex; }
   #sheet{
     width:100%; max-width:560px;
-    background:var(--glass-bg-strong);
-    border:1px solid var(--glass-border);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    background:#ffffff;
+    border:1px solid var(--card-border);
     border-radius: 28px 28px 0 0;
-    box-shadow: 0 -10px 40px rgba(20,25,40,0.25);
+    box-shadow: 0 -10px 40px rgba(20,25,40,0.16);
     padding: 10px 20px calc(24px + env(safe-area-inset-bottom,0px));
     max-height:88vh; overflow-y:auto;
     animation: sheetup .28s cubic-bezier(.22,1,.36,1);
   }
   @keyframes sheetup{ from{ transform:translateY(30px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
-  .grabber{ width:38px; height:5px; border-radius:3px; background:rgba(120,130,150,0.4); margin:6px auto 14px; }
+  .grabber{ width:38px; height:5px; border-radius:3px; background:#dfe2e8; margin:6px auto 14px; }
   #sheet h2{ margin:0 0 14px; font-size:1.15rem; font-weight:750; }
   .field{ margin-bottom:14px; }
   .field label{ display:block; font-size:0.76rem; font-weight:700; color:var(--ink-soft); margin-bottom:6px; letter-spacing:0.01em; }
-  .field input[type=text], .field textarea{
-    width:100%; border:1px solid var(--glass-border); border-radius:14px;
-    background:rgba(255,255,255,0.55); padding:11px 13px; font-size:0.95rem; color:var(--ink);
+  .field input[type=text], .field textarea, .field select, .field input[type=date]{
+    width:100%; border:1px solid var(--card-border); border-radius:14px;
+    background:#f8f9fb; padding:11px 13px; font-size:0.95rem; color:var(--ink);
     font-family:inherit; resize:none;
   }
-  @media (prefers-color-scheme: dark){
-    .field input[type=text], .field textarea, .field input[type=time]{ background:rgba(255,255,255,0.08); }
-  }
   .field textarea{ min-height:64px; }
+  .fieldrow2{ display:flex; gap:10px; }
+  .fieldrow2 .field{ flex:1; min-width:0; }
   .timerow{ display:flex; align-items:center; gap:10px; }
   .timerow .to{ color:var(--ink-soft); font-size:0.85rem; }
   .field input[type=time]{
-    flex:1; border:1px solid var(--glass-border); border-radius:14px;
-    background:rgba(255,255,255,0.55); padding:9px 10px; font-size:0.95rem; color:var(--ink);
+    flex:1; border:1px solid var(--card-border); border-radius:14px;
+    background:#f8f9fb; padding:9px 10px; font-size:0.95rem; color:var(--ink);
     font-family:inherit;
   }
   .alarmrow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .alarmrow .lbl{ font-size:0.9rem; font-weight:600; }
   .alarmtimewrap{ margin-top:10px; display:none; }
   .alarmtimewrap.show{ display:block; }
+
+  /* teardown segmented buttons in add/edit sheet */
+  .segrow{ display:flex; gap:8px; }
+  .segbtn{
+    flex:1; border:1px solid var(--card-border); background:#f8f9fb; border-radius:14px;
+    padding:10px; font-size:0.88rem; font-weight:700; color:var(--ink-soft); cursor:pointer;
+    font-family:inherit; transition: background .15s ease, color .15s ease;
+  }
+  .segbtn.active{ background: var(--accent-grad); color:#fff; border-color:transparent; }
+  .segbtn:active{ transform:scale(0.97); }
+  .assigneefield{ margin-top:10px; display:none; }
+  .assigneefield.show{ display:block; }
+
   .actions{ display:flex; gap:10px; margin-top:6px; }
   .btn{
     flex:1; border:none; border-radius:16px; padding:13px; font-size:0.95rem; font-weight:700;
     cursor:pointer; -webkit-tap-highlight-color:transparent;
   }
   .btn.primary{ background:var(--accent-grad); color:white; }
-  .btn.secondary{ background:rgba(120,130,150,0.18); color:var(--ink); }
-  .btn.danger{ background:rgba(255,69,58,0.14); color:var(--danger); flex:none; padding:13px 18px; }
+  .btn.secondary{ background:#f0f1f4; color:var(--ink); }
+  .btn.danger{ background:rgba(225,29,46,0.1); color:var(--danger); flex:none; padding:13px 18px; }
   .btn:active{ transform:scale(0.97); }
 
   .toast{
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
-    background:var(--glass-bg-strong); border:1px solid var(--glass-border);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    background:#232838; color:#fff;
     padding:11px 18px; border-radius:16px; font-size:0.85rem; font-weight:600;
-    box-shadow: var(--glass-shadow); opacity:0; pointer-events:none; transition:.25s ease; z-index:200;
+    box-shadow: 0 8px 24px rgba(20,20,40,0.25); opacity:0; pointer-events:none; transition:.25s ease; z-index:200;
   }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   .banner{
     margin:0 16px 4px; padding:9px 14px; border-radius:14px; font-size:0.76rem; font-weight:600;
-    background:rgba(255,159,10,0.16); color:#a35a00; border:1px solid rgba(255,159,10,0.3);
+    background:#FFF6E5; color:#a35a00; border:1px solid #FCE3B0;
   }
-  @media (prefers-color-scheme: dark){ .banner{ color:#ffcf8a; } }
+
+  /* ---------- Alarm popup ---------- */
+  #alarmOverlay{
+    position:fixed; inset:0; z-index:300;
+    background:rgba(20,24,35,0.55);
+    display:none; align-items:center; justify-content:center;
+    padding:24px;
+    backdrop-filter: blur(2px);
+  }
+  #alarmOverlay.show{ display:flex; }
+  #alarmSheet{
+    width:100%; max-width:400px;
+    background:#ffffff;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(20,25,40,0.35);
+    padding: 30px 24px calc(24px + env(safe-area-inset-bottom,0px));
+    text-align:center;
+    animation: alarmpop .32s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes alarmpop{ from{ transform:scale(0.85); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  .alarmicon{
+    width:68px; height:68px; border-radius:50%;
+    background: var(--accent-grad); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2rem; margin:0 auto 14px;
+    animation: alarmring 1s ease-in-out infinite;
+  }
+  @keyframes alarmring{
+    0%,100%{ transform:rotate(0deg) scale(1); }
+    20%{ transform:rotate(-14deg) scale(1.05); }
+    40%{ transform:rotate(12deg) scale(1.05); }
+    60%{ transform:rotate(-8deg) scale(1.02); }
+    80%{ transform:rotate(6deg) scale(1.02); }
+  }
+  .alarmeyebrow{
+    font-size:0.78rem; font-weight:750; letter-spacing:0.03em; text-transform:uppercase;
+    color:var(--danger); margin-bottom:6px;
+  }
+  #alarmTimeLabel{ font-size:0.85rem; font-weight:700; color:var(--ink-soft); margin-bottom:4px; }
+  #alarmTaskTitle{
+    margin:0 0 8px; font-size:1.25rem; font-weight:800; line-height:1.3; color:var(--ink);
+    word-break:break-word;
+  }
+  #alarmTaskContent{
+    margin:0 0 6px; font-size:0.9rem; color:var(--ink-soft); line-height:1.4;
+    word-break:break-word; white-space:pre-wrap;
+  }
+  .alarmchiprow{ display:flex; justify-content:center; margin:8px 0 4px; }
+  .alarmchiprow .catchip{ background:var(--cat-color, var(--cat-none)); }
+  .alarmactions{ display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+  .alarmactions .btn{ padding:15px; font-size:1rem; }
+  .alarmactions .btn.primary{ order:2; }
+  .alarmactions .btn.secondary{ order:1; }
 </style>
 </head>
 <body>
@@ -270,9 +414,11 @@
   <header>
     <div class="titleblock">
       <h1>Việc cần làm</h1>
-      <div class="sub" id="dateLabel">—</div>
     </div>
     <div class="topbtns">
+      <div class="glassbtn" id="cleanupBtn" title="Dọn việc đã qua">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6"/><line x1="10" y1="11" x2="10" y2="16"/><line x1="14" y1="11" x2="14" y2="16"/></svg>
+      </div>
       <div class="glassbtn" id="editBtn" title="Chỉnh sửa">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
       </div>
@@ -282,8 +428,31 @@
     </div>
   </header>
 
+  <div class="datenav">
+    <button class="navbtn" id="prevDateBtn">‹</button>
+    <button class="datelabelbtn" id="dateLabelBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span id="dateLabel">—</span>
+    </button>
+    <button class="navbtn" id="nextDateBtn">›</button>
+    <button class="todaybtn" id="todayBtn" style="display:none;">Hôm nay</button>
+    <input type="date" id="datePicker" class="hiddendate">
+  </div>
+
+  <div class="staffnav">
+    <div class="staffpill" id="staffPill">
+      <button type="button" class="staffseg active" data-mode="1">1 nhân viên</button>
+      <button type="button" class="staffseg" data-mode="2">2 nhân viên</button>
+    </div>
+  </div>
+
   <div id="configBanner" class="banner" style="display:none;">
     Chưa kết nối Google Sheet — dữ liệu đang lưu tạm trên trình duyệt này. Mở file HTML, sửa dòng SHEET_API_URL ở cuối file.
+  </div>
+
+  <div class="colheaderbar" id="colHeaderBar">
+    <div class="colheadercell">Nhân viên A</div>
+    <div class="colheadercell">Nhân viên B</div>
   </div>
 
   <div id="timelineScroll">
@@ -304,11 +473,49 @@
       <textarea id="fContent" placeholder="Chi tiết công việc..."></textarea>
     </div>
     <div class="field">
+      <label>Ngày</label>
+      <input type="date" id="fDate">
+    </div>
+    <div class="field">
       <label>Thời gian thực hiện</label>
       <div class="timerow">
         <input type="time" id="fStart" value="08:00">
         <span class="to">đến</span>
         <input type="time" id="fEnd" value="09:00">
+      </div>
+    </div>
+    <div class="fieldrow2">
+      <div class="field">
+        <label>Phân loại</label>
+        <select id="fCategory">
+          <option value="">Không phân loại</option>
+          <option value="vesinh">Vệ sinh</option>
+          <option value="kiemrutdate">Kiểm - rút date</option>
+          <option value="congviec">Công việc cần làm</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Lặp lại</label>
+        <select id="fRepeat">
+          <option value="none">Không lặp</option>
+          <option value="daily">Theo ngày</option>
+          <option value="weekly">Theo tuần</option>
+          <option value="monthly">Theo tháng</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Teardown</label>
+      <div class="segrow" id="fTeardown">
+        <button type="button" class="segbtn active" data-val="1">1 nhân viên</button>
+        <button type="button" class="segbtn" data-val="2">2 nhân viên</button>
+      </div>
+      <div class="assigneefield" id="assigneeField">
+        <label style="margin-top:10px;">Phân công cho</label>
+        <div class="segrow" id="fAssignee">
+          <button type="button" class="segbtn" data-val="A">Nhân viên A</button>
+          <button type="button" class="segbtn" data-val="B">Nhân viên B</button>
+        </div>
       </div>
     </div>
     <div class="field">
@@ -329,6 +536,21 @@
   </div>
 </div>
 
+<div id="alarmOverlay">
+  <div id="alarmSheet">
+    <div class="alarmicon">⏰</div>
+    <div class="alarmeyebrow">Đến giờ làm việc</div>
+    <div id="alarmTimeLabel"></div>
+    <h2 id="alarmTaskTitle"></h2>
+    <p id="alarmTaskContent"></p>
+    <div class="alarmchiprow" id="alarmChipRow"></div>
+    <div class="alarmactions">
+      <button class="btn secondary" id="alarmSnoozeBtn">Báo lại sau 5 phút</button>
+      <button class="btn primary" id="alarmDismissBtn">Tắt báo thức</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -338,12 +560,29 @@
    ========================================================= */
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyoLy71scVJYzrGIPH2xi5Xw_YRsLVsoEeIiq1d3fxZBlSY4deP2b_cwrAnOGXEtTob8Q/exec";
 
-const HOUR_PX = 92;
+const HOUR_PX = 112;
 const LS_KEY = "timeline_tasks_v1";
+const STAFF_LS_KEY = "timeline_staffmode_v1";
 let tasks = [];
 let editingId = null;
 let managing = false;
 let notifTimers = {};
+let selectedDate = new Date();
+selectedDate.setHours(0,0,0,0);
+let staffMode = localStorage.getItem(STAFF_LS_KEY) || "1";
+let fTeardownVal = "1";
+let fAssigneeVal = "";
+
+const CATEGORY_META = {
+  vesinh:      { label: "Vệ sinh",            color: "var(--cat-vesinh)" },
+  kiemrutdate: { label: "Kiểm - rút date",      color: "var(--cat-kiemrutdate)" },
+  congviec:    { label: "Công việc cần làm",   color: "var(--cat-congviec)" }
+};
+const REPEAT_META = {
+  daily:   "Lặp hàng ngày",
+  weekly:  "Lặp hàng tuần",
+  monthly: "Lặp hàng tháng"
+};
 
 const $ = (id) => document.getElementById(id);
 const timelineInner = $("timelineInner");
@@ -363,8 +602,10 @@ function nowStr(){
   const d = new Date();
   return pad(d.getHours())+":"+pad(d.getMinutes());
 }
-function fmtDate(){
-  const d = new Date();
+function isoDate(d){
+  return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+}
+function fmtDate(d){
   const days = ["Chủ nhật","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
   return days[d.getDay()] + ", " + pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear();
 }
@@ -374,6 +615,22 @@ function showToast(msg){
   toastEl.classList.add("show");
   clearTimeout(showToast._t);
   showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 2200);
+}
+function catColor(cat){ return cat && CATEGORY_META[cat] ? CATEGORY_META[cat].color : "var(--cat-none)"; }
+function catLabel(cat){ return cat && CATEGORY_META[cat] ? CATEGORY_META[cat].label : ""; }
+
+/* ---------------- Occurrence matching (repeat rules) ---------------- */
+function occursOnDate(task, dateStr){
+  const anchor = task.date || dateStr;
+  const rep = task.repeat || "none";
+  if(rep === "none") return anchor === dateStr;
+  if(dateStr < anchor) return false;
+  if(rep === "daily") return true;
+  const a = new Date(anchor+"T00:00:00");
+  const d = new Date(dateStr+"T00:00:00");
+  if(rep === "weekly") return a.getDay() === d.getDay();
+  if(rep === "monthly") return a.getDate() === d.getDate();
+  return anchor === dateStr;
 }
 
 /* ---------------- Data layer ---------------- */
@@ -432,74 +689,164 @@ async function deleteTask(id){
   render();
   scheduleAllAlarms();
 }
+async function cleanupPastTasks(){
+  const todayStr = isoDate(new Date());
+  const old = tasks.filter(t => (t.repeat||"none")==="none" && (t.date||"") < todayStr);
+  if(old.length===0){ showToast("Không có việc cũ cần dọn"); return; }
+  if(!confirm(`Xoá ${old.length} việc đã qua (không lặp lại) để làm nhẹ Google Sheet?`)) return;
+  for(const t of old){ await deleteTask(t.id); }
+  showToast("Đã dọn dẹp việc cũ");
+}
 
-/* ---------------- Render timeline ---------------- */
-function render(){
-  timelineInner.innerHTML = "";
-  timelineInner.style.height = (24*HOUR_PX)+"px";
+/* ---------------- Date navigation ---------------- */
+function syncDateUI(){
+  $("dateLabel").textContent = fmtDate(selectedDate);
+  $("datePicker").value = isoDate(selectedDate);
+  const todayStr = isoDate(new Date());
+  $("todayBtn").style.display = (isoDate(selectedDate) === todayStr) ? "none" : "inline-block";
+}
+function changeDate(deltaDays){
+  selectedDate.setDate(selectedDate.getDate()+deltaDays);
+  syncDateUI();
+  render();
+}
+$("prevDateBtn").addEventListener("click", ()=>changeDate(-1));
+$("nextDateBtn").addEventListener("click", ()=>changeDate(1));
+$("todayBtn").addEventListener("click", ()=>{
+  selectedDate = new Date(); selectedDate.setHours(0,0,0,0);
+  syncDateUI(); render();
+});
+$("dateLabelBtn").addEventListener("click", ()=>{
+  const dp = $("datePicker");
+  if(dp.showPicker){ try{ dp.showPicker(); return; }catch(e){} }
+  dp.focus(); dp.click();
+});
+$("datePicker").addEventListener("change", (e)=>{
+  const v = e.target.value;
+  if(!v) return;
+  const [y,m,dd] = v.split("-").map(Number);
+  selectedDate = new Date(y, m-1, dd);
+  syncDateUI(); render();
+});
+$("cleanupBtn").addEventListener("click", cleanupPastTasks);
 
-  for(let h=0; h<24; h++){
-    const row = document.createElement("div");
-    row.className = "hourrow";
-    row.style.top = (h*HOUR_PX)+"px";
-    const lbl = document.createElement("div");
-    lbl.className = "hourlabel";
-    lbl.textContent = pad(h)+":00";
-    row.appendChild(lbl);
-    row.style.position = "absolute";
-    row.style.left = "0"; row.style.right = "0";
-    row.style.height = HOUR_PX+"px";
-    timelineInner.appendChild(row);
-  }
+/* ---------------- Staff mode toggle ---------------- */
+function syncStaffPillUI(){
+  document.querySelectorAll(".staffseg").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.mode === staffMode);
+  });
+  $("colHeaderBar").classList.toggle("show", staffMode === "2");
+}
+document.querySelectorAll(".staffseg").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(btn.dataset.mode === staffMode) return;
+    staffMode = btn.dataset.mode;
+    localStorage.setItem(STAFF_LS_KEY, staffMode);
+    syncStaffPillUI();
+    render();
+  });
+});
 
-  const nowH = timeToHours(nowStr());
-  const nowLine = document.createElement("div");
-  nowLine.className = "nowline";
-  nowLine.style.top = (nowH*HOUR_PX)+"px";
-  nowLine.innerHTML = `<div class="time">${nowStr()}</div><div class="dot"></div><div class="line"></div>`;
-  timelineInner.appendChild(nowLine);
+/* ---------------- Chia cột cho các việc trùng giờ ----------------
+   Gom các việc chồng lấn thành 1 cụm, mỗi việc vào cột trống đầu tiên,
+   rồi cho mỗi việc giãn sang các cột bên phải nếu không bị việc khác chặn. */
+const MIN_CARD_H = 52;
+function layoutTasks(list){
+  const items = list.map(t=>{
+    const top = timeToHours(t.start)*HOUR_PX;
+    const bottom = Math.max(timeToHours(t.end)*HOUR_PX, top + MIN_CARD_H);   // tính theo chiều cao hiển thị thật
+    return { task:t, top, bottom, col:0, cols:1, span:1 };
+  }).sort((a,b)=> a.top-b.top || b.bottom-a.bottom);
 
-  if(tasks.length===0){
-    const empty = document.createElement("div");
-    empty.className = "emptyhint";
-    empty.style.position="absolute"; empty.style.top=(HOUR_PX*8)+"px"; empty.style.left="0"; empty.style.right="0";
-    empty.textContent = "Chưa có việc nào — bấm + để thêm";
-    timelineInner.appendChild(empty);
-  }
+  const clusters = [];
+  let cur = [], curEnd = -1;
+  items.forEach(it=>{
+    if(cur.length && it.top >= curEnd){ clusters.push(cur); cur = []; curEnd = -1; }
+    cur.push(it);
+    curEnd = Math.max(curEnd, it.bottom);
+  });
+  if(cur.length) clusters.push(cur);
 
-  tasks.slice().sort((a,b)=>timeToHours(a.start)-timeToHours(b.start)).forEach(task=>{
-    const top = timeToHours(task.start)*HOUR_PX;
-    let height = (timeToHours(task.end)-timeToHours(task.start))*HOUR_PX;
-    if(height < 46) height = 46;
+  clusters.forEach(cl=>{
+    const colEnds = [];
+    cl.forEach(it=>{
+      let c = colEnds.findIndex(end => end <= it.top);
+      if(c === -1){ c = colEnds.length; colEnds.push(0); }
+      colEnds[c] = it.bottom;
+      it.col = c;
+    });
+    const total = colEnds.length;
+    cl.forEach(it=>{
+      it.cols = total;
+      let span = 1;
+      for(let c = it.col+1; c < total; c++){
+        const blocked = cl.some(o => o!==it && o.col===c && o.top < it.bottom && o.bottom > it.top);
+        if(blocked) break;
+        span++;
+      }
+      it.span = span;
+    });
+  });
+  return items;
+}
+
+/* ---------------- Vẽ các thẻ việc trong 1 dải khu vực ----------------
+   offsetFrac/widthFrac: tỉ lệ (0..1) của khu vực đặt thẻ (AREA) mà nhóm này được cấp.
+   Dùng chung cho chế độ xem "1 nhân viên" (offsetFrac=0, widthFrac=1) và
+   mỗi nửa cột trong chế độ xem "2 nhân viên". */
+function renderGroupCards(list, offsetFrac, widthFrac, isPastDay, isToday, nowH){
+  const AREA = "(100% - var(--gutter-w) - 12px)";
+  const COL_GAP = 4;
+  const areaW = Math.max(200, timelineInner.clientWidth - 62 - 12);
+  layoutTasks(list).forEach(it=>{
+    const task = it.task;
+    const height = it.bottom - it.top;
+    const groupPxW = areaW * widthFrac;
+    const cardW = groupPxW * (it.span / it.cols);
+    const compact = cardW < 240;
+    const tiny = cardW < 115;
+    const micro = cardW < 85;
+    const short = height < 72;
+
     const card = document.createElement("div");
-    card.className = "taskcard";
-    if(timeToHours(task.end) < nowH) card.classList.add("past");
-    if(timeToHours(task.start) <= nowH && nowH <= timeToHours(task.end)) card.classList.add("live");
-    card.style.top = top+"px";
+    card.className = "taskcard" + (compact ? " compact" : "") + (tiny ? " tiny" : "") + (micro ? " micro" : "") + (short ? " short" : "");
+    card.style.setProperty("--cat-color", catColor(task.category));
+    if(isPastDay || (isToday && timeToHours(task.end) < nowH)) card.classList.add("past");
+    if(isToday && timeToHours(task.start) <= nowH && nowH <= timeToHours(task.end)) card.classList.add("live");
+    card.style.top = it.top+"px";
     card.style.height = height+"px";
-    card.style.left = "8px";
+    const leftFrac = offsetFrac + widthFrac * (it.col/it.cols);
+    const wFrac = widthFrac * (it.span/it.cols);
+    card.style.left  = `calc(var(--gutter-w) + 6px + ${AREA} * ${leftFrac.toFixed(5)})`;
+    card.style.width = `calc(${AREA} * ${wFrac.toFixed(5)} - ${it.cols>1 ? COL_GAP : 0}px)`;
     card.dataset.id = task.id;
 
+    const chip = task.category ? `<span class="catchip">${escapeHtml(catLabel(task.category))}</span>` : "";
+    const repChip = (task.repeat && task.repeat!=="none") ? `<span class="repeatchip">${escapeHtml(REPEAT_META[task.repeat]||"")}</span>` : "";
+    const timeTxt = tiny ? task.start : (task.start+"–"+task.end);
+    const titleHtml = `<div class="ttitle">${escapeHtml(task.title)}</div>`;
+    const timeHtml = `<div class="ttime">${timeTxt}</div>`;
+    const switchHtml = `<div class="alarmswitch${task.alarmOn ? " on" : ""}" role="switch" aria-checked="${!!task.alarmOn}" title="Bật/tắt báo thức"></div>`;
+
+    const head = compact
+      ? `<div class="row1">${titleHtml}</div><div class="row2">${timeHtml}${switchHtml}</div>`
+      : `<div class="row1">${titleHtml}<div class="rhs">${timeHtml}${switchHtml}</div></div>`;
+
     card.innerHTML = `
-      <div class="row1">
-        <div class="ttitle">${escapeHtml(task.title)}</div>
-        <div class="ttime">${task.start}–${task.end}</div>
-      </div>
+      ${head}
+      ${(chip || repChip) ? `<div class="chiprow">${chip}${repChip}</div>` : ""}
       ${task.content ? `<div class="tcontent">${escapeHtml(task.content)}</div>` : ""}
     `;
 
-    if(height >= 58){
-      const sw = document.createElement("div");
-      sw.className = "alarmswitch" + (task.alarmOn ? " on" : "");
-      sw.style.position="absolute"; sw.style.right="10px"; sw.style.bottom="8px";
-      sw.addEventListener("click", (e)=>{
-        e.stopPropagation();
-        task.alarmOn = !task.alarmOn;
-        if(task.alarmOn) requestNotifPermission();
-        upsertTask(task);
-      });
-      card.appendChild(sw);
-    }
+    card.querySelector(".alarmswitch").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      task.alarmOn = !task.alarmOn;
+      if(task.alarmOn){
+        if(!task.alarmTime) task.alarmTime = task.start;
+        requestNotifPermission();
+      }
+      upsertTask(task);
+    });
 
     if(managing){
       const del = document.createElement("div");
@@ -507,7 +854,7 @@ function render(){
       del.textContent = "−";
       del.addEventListener("click",(e)=>{
         e.stopPropagation();
-        if(confirm("Xoá việc \\""+task.title+"\\"?")) deleteTask(task.id);
+        if(confirm('Xoá việc "'+task.title+'"?')) deleteTask(task.id);
       });
       card.appendChild(del);
     }
@@ -515,26 +862,128 @@ function render(){
     card.addEventListener("click", ()=> openEdit(task));
     timelineInner.appendChild(card);
   });
+}
 
-  $("dateLabel").textContent = fmtDate();
+/* ---------------- Render timeline ---------------- */
+function render(){
+  timelineInner.innerHTML = "";
+  timelineInner.style.height = (24*HOUR_PX)+"px";
+
+  for(let h=0; h<24; h++){
+    [0,15,30,45].forEach(min=>{
+      const top = (h + min/60)*HOUR_PX;
+      const kind = min===0 ? "h00" : (min===30 ? "h30" : (min===15 ? "h15" : "h45"));
+      const tick = document.createElement("div");
+      tick.className = "tick " + kind;
+      tick.style.top = top+"px";
+      timelineInner.appendChild(tick);
+
+      const lbl = document.createElement("div");
+      lbl.className = "ticklabel " + kind;
+      lbl.style.top = (top-8)+"px";
+      lbl.textContent = pad(h)+":"+pad(min);
+      timelineInner.appendChild(lbl);
+    });
+  }
+
+  const dateStr = isoDate(selectedDate);
+  const todayStr = isoDate(new Date());
+  const isToday = dateStr === todayStr;
+  const isPastDay = dateStr < todayStr;
+  const nowH = timeToHours(nowStr());
+
+  if(isToday){
+    const nowLine = document.createElement("div");
+    nowLine.className = "nowline";
+    nowLine.style.top = (nowH*HOUR_PX)+"px";
+    nowLine.innerHTML = `<div class="time">${nowStr()}</div><div class="dot"></div><div class="line"></div>`;
+    timelineInner.appendChild(nowLine);
+  }
+
+  const allDayTasks = tasks.filter(t=>occursOnDate(t, dateStr));
+
+  let visibleTasks;
+  if(staffMode === "2"){
+    // Chỉ hiện việc đã khai teardown = 2 nhân viên (và đã gán A hoặc B).
+    // Việc teardown = 1 nhân viên bị ẩn hoàn toàn ở chế độ xem này (theo yêu cầu).
+    visibleTasks = allDayTasks.filter(t => t.teardown === "2" && (t.assignee === "A" || t.assignee === "B"));
+  }else{
+    visibleTasks = allDayTasks;
+  }
+
+  if(visibleTasks.length===0){
+    const empty = document.createElement("div");
+    empty.className = "emptyhint";
+    empty.style.position="absolute"; empty.style.top=(HOUR_PX*8)+"px"; empty.style.left="0"; empty.style.right="0";
+    empty.textContent = staffMode === "2"
+      ? "Chưa có việc nào cần 2 nhân viên — bấm + để thêm"
+      : "Chưa có việc nào — bấm + để thêm";
+    timelineInner.appendChild(empty);
+  }
+
+  if(staffMode === "2"){
+    const GAP_FRAC = 0.03;
+    const halfFrac = (1 - GAP_FRAC) / 2;
+    const listA = visibleTasks.filter(t=>t.assignee==="A");
+    const listB = visibleTasks.filter(t=>t.assignee==="B");
+    renderGroupCards(listA, 0, halfFrac, isPastDay, isToday, nowH);
+    renderGroupCards(listB, halfFrac + GAP_FRAC, halfFrac, isPastDay, isToday, nowH);
+
+    const divider = document.createElement("div");
+    divider.className = "coldivider";
+    divider.style.left = `calc(var(--gutter-w) + 6px + (100% - var(--gutter-w) - 12px) * ${(halfFrac + GAP_FRAC/2).toFixed(5)})`;
+    timelineInner.appendChild(divider);
+  }else{
+    renderGroupCards(visibleTasks, 0, 1, isPastDay, isToday, nowH);
+  }
+
+  syncDateUI();
 }
 function escapeHtml(s){
   return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
 setInterval(()=>{ render(); }, 60000);
+let _rz; window.addEventListener("resize", ()=>{ clearTimeout(_rz); _rz = setTimeout(render, 150); });
 
 /* ---------------- Modal logic ---------------- */
+function setTeardownUI(val){
+  fTeardownVal = val;
+  document.querySelectorAll("#fTeardown .segbtn").forEach(b=> b.classList.toggle("active", b.dataset.val===val));
+  const show = val === "2";
+  $("assigneeField").classList.toggle("show", show);
+  if(show){
+    if(!fAssigneeVal) setAssigneeUI("A");
+  }else{
+    fAssigneeVal = "";
+    document.querySelectorAll("#fAssignee .segbtn").forEach(b=> b.classList.remove("active"));
+  }
+}
+function setAssigneeUI(val){
+  fAssigneeVal = val;
+  document.querySelectorAll("#fAssignee .segbtn").forEach(b=> b.classList.toggle("active", b.dataset.val===val));
+}
+document.querySelectorAll("#fTeardown .segbtn").forEach(b=>{
+  b.addEventListener("click", ()=> setTeardownUI(b.dataset.val));
+});
+document.querySelectorAll("#fAssignee .segbtn").forEach(b=>{
+  b.addEventListener("click", ()=> setAssigneeUI(b.dataset.val));
+});
+
 function openAdd(){
   editingId = null;
   $("sheetTitle").textContent = "Thêm việc cần làm";
   $("fTitle").value = "";
   $("fContent").value = "";
+  $("fDate").value = isoDate(selectedDate);
   const roundNow = new Date(); roundNow.setMinutes(0,0,0); roundNow.setHours(roundNow.getHours()+1);
   const startDefault = pad(roundNow.getHours())+":00";
   const endD = new Date(roundNow); endD.setHours(endD.getHours()+1);
   $("fStart").value = startDefault;
   $("fEnd").value = pad(endD.getHours())+":00";
+  $("fCategory").value = "";
+  $("fRepeat").value = "none";
+  setTeardownUI("1");
   $("fAlarmToggle").classList.remove("on");
   $("alarmTimeWrap").classList.remove("show");
   $("fAlarmTime").value = startDefault;
@@ -547,8 +996,14 @@ function openEdit(task){
   $("sheetTitle").textContent = "Sửa việc cần làm";
   $("fTitle").value = task.title;
   $("fContent").value = task.content || "";
+  $("fDate").value = task.date || isoDate(selectedDate);
   $("fStart").value = task.start;
   $("fEnd").value = task.end;
+  $("fCategory").value = task.category || "";
+  $("fRepeat").value = task.repeat || "none";
+  fAssigneeVal = task.assignee || "";
+  setTeardownUI(task.teardown === "2" ? "2" : "1");
+  if(task.teardown === "2") setAssigneeUI(task.assignee === "B" ? "B" : "A");
   $("fAlarmToggle").classList.toggle("on", !!task.alarmOn);
   $("alarmTimeWrap").classList.toggle("show", !!task.alarmOn);
   $("fAlarmTime").value = task.alarmTime || task.start;
@@ -577,7 +1032,12 @@ $("saveBtn").addEventListener("click", ()=>{
   const task = {
     id: editingId || uid(),
     title, content: $("fContent").value.trim(),
+    date: $("fDate").value || isoDate(selectedDate),
     start, end,
+    category: $("fCategory").value || "",
+    repeat: $("fRepeat").value || "none",
+    teardown: fTeardownVal,
+    assignee: fTeardownVal === "2" ? fAssigneeVal : "",
     alarmOn,
     alarmTime: alarmOn ? ($("fAlarmTime").value || start) : ""
   };
@@ -625,12 +1085,39 @@ function beep(){
     }, 260);
   }catch(e){}
 }
+
+/* --- Alarm ring loop: keeps ringing (sound + vibration) until dismissed --- */
+let currentAlarmTask = null;
+let alarmQueue = [];   // các báo thức đến cùng lúc, hiện lần lượt
+let alarmSoundTimer = null;
+let alarmAutoStopTimer = null;
+const ALARM_RING_GAP_MS = 1600;      // khoảng cách giữa các lần kêu
+const ALARM_MAX_RING_MS = 3*60*1000; // tự tắt sau 3 phút nếu không ai bấm gì
+
+function startAlarmSound(){
+  stopAlarmSound();
+  beep();
+  if("vibrate" in navigator) navigator.vibrate([350,150,350,150,350]);
+  alarmSoundTimer = setInterval(()=>{
+    beep();
+    if("vibrate" in navigator) navigator.vibrate([350,150,350,150,350]);
+  }, ALARM_RING_GAP_MS);
+  alarmAutoStopTimer = setTimeout(stopAlarmSound, ALARM_MAX_RING_MS);
+}
+function stopAlarmSound(){
+  if(alarmSoundTimer){ clearInterval(alarmSoundTimer); alarmSoundTimer = null; }
+  if(alarmAutoStopTimer){ clearTimeout(alarmAutoStopTimer); alarmAutoStopTimer = null; }
+  if("vibrate" in navigator) navigator.vibrate(0);
+}
+
 function scheduleAllAlarms(){
   Object.values(notifTimers).forEach(clearTimeout);
   notifTimers = {};
   const now = new Date();
+  const todayStr = isoDate(now);
   tasks.forEach(task=>{
     if(!task.alarmOn) return;
+    if(!occursOnDate(task, todayStr)) return;
     const t = task.alarmTime || task.start;
     const [h,m] = t.split(":").map(Number);
     const target = new Date(); target.setHours(h,m,0,0);
@@ -640,17 +1127,61 @@ function scheduleAllAlarms(){
     }
   });
 }
+function showAlarmModal(task){
+  $("alarmTimeLabel").textContent = task.start+" – "+task.end;
+  $("alarmTaskTitle").textContent = task.title;
+  $("alarmTaskContent").textContent = task.content || "";
+  $("alarmTaskContent").style.display = task.content ? "block" : "none";
+  const chip = task.category
+    ? `<span class="catchip" style="--cat-color:${catColor(task.category)}">${escapeHtml(catLabel(task.category))}</span>`
+    : "";
+  $("alarmChipRow").innerHTML = chip;
+  const more = alarmQueue.length;
+  document.querySelector(".alarmeyebrow").textContent = more ? `Đến giờ làm việc (còn ${more} việc khác)` : "Đến giờ làm việc";
+  $("alarmOverlay").classList.add("show");
+}
+function hideAlarmModal(){
+  $("alarmOverlay").classList.remove("show");
+}
 function fireAlarm(task){
-  beep();
   if("Notification" in window && Notification.permission === "granted"){
     new Notification("⏰ "+task.title, { body: task.content || (task.start+" – "+task.end) });
-  }else{
-    showToast("⏰ Đến giờ: "+task.title);
   }
+  // Đang có báo thức khác hiện -> xếp hàng, không ghi đè
+  if(currentAlarmTask && currentAlarmTask.id !== task.id){
+    if(!alarmQueue.some(t=>t.id===task.id)) alarmQueue.push(task);
+    showAlarmModal(currentAlarmTask);   // cập nhật số "còn N việc khác"
+    return;
+  }
+  currentAlarmTask = task;
+  showAlarmModal(task);
+  startAlarmSound();
   render();
 }
+function nextAlarm(){
+  currentAlarmTask = null;
+  const nxt = alarmQueue.shift();
+  if(nxt) fireAlarm(nxt);
+}
+$("alarmDismissBtn").addEventListener("click", ()=>{
+  stopAlarmSound();
+  hideAlarmModal();
+  nextAlarm();
+});
+$("alarmSnoozeBtn").addEventListener("click", ()=>{
+  stopAlarmSound();
+  hideAlarmModal();
+  const task = currentAlarmTask;
+  if(task){
+    showToast("Đã báo lại sau 5 phút");
+    setTimeout(()=>fireAlarm(task), 5*60*1000);
+  }
+  nextAlarm();
+});
 
 /* ---------------- Init ---------------- */
+syncDateUI();
+syncStaffPillUI();
 loadTasks();
 setTimeout(()=>{
   const target = timeToHours(nowStr())*HOUR_PX - 160;
